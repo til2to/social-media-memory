@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
-
+import CryptoJS from 'crypto-js';
 
 import useStyles from "./styles";
 import { createPost, updatePost} from "../../actions/posts";
@@ -12,7 +12,6 @@ const Form = ({ currentId, setCurrentId }) => {
   const classes = useStyles();
   // define state to hold post data
   const [postData, setPostData] = useState({
-    creator: "",
     title: "",
     message: "",
     tags: "",
@@ -26,21 +25,23 @@ const Form = ({ currentId, setCurrentId }) => {
     if(post) setPostData(post)
   }, [post]);
 
-  // if current id exist, submit new post else update the existing post
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    if(currentId) {
-      dispatch(updatePost(currentId, postData))
-    }else{
-      dispatch(createPost(postData))
+  const encryptedPayload = localStorage.getItem('profile');
+  let user = null;
+
+  if (encryptedPayload) {
+    const bytes = CryptoJS.AES.decrypt(encryptedPayload, "my secret key with spaces and hashes#");
+    if (bytes.toString().length > 0) {
+      const decryptedPayload = bytes.toString(CryptoJS.enc.Utf8);
+      user = JSON.parse(decryptedPayload);
+    } else {
+      console.error('Failed to decrypt payload');
     }
-    clear()
-  };
+  }
+  
   // clear all fields of the form
   const clear = () => {
     setCurrentId(null)
     setPostData({
-      creator: "",
       title: "",
       message: "",
       tags: "",
@@ -48,6 +49,27 @@ const Form = ({ currentId, setCurrentId }) => {
     })
   }
 
+   // if current id exist, submit new post else update the existing post
+   const handleSubmit = (e) => {
+    e.preventDefault()
+    if(currentId === 0) {
+      dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }))
+      clear();
+    }else{
+      dispatch(createPost({ ...postData, name: user?.result?.name }))
+      clear();
+    }
+  };
+
+  if(!user?.result?.name){
+    return (
+      <Paper className={classes.paper}>
+        <Typography variant="h6" align="center">
+          Please Sign In to create your own memories and like other memories
+        </Typography>
+      </Paper>
+    )
+  }
   return (
     <Paper className={classes.paper}>
       <form
@@ -59,16 +81,6 @@ const Form = ({ currentId, setCurrentId }) => {
         <Typography variant="h6">
           {currentId ? "Editing" : "Creating"} a Memory
         </Typography>
-        <TextField
-          name="creator"
-          variant="outlined"
-          label="Creator"
-          fullWidth
-          value={postData.creator}
-          onChange={(e) =>
-            setPostData({ ...postData, creator: e.target.value })
-          }
-        />
         <TextField
           name="title"
           variant="outlined"
