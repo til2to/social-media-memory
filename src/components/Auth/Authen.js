@@ -32,7 +32,7 @@ const Authen = () => {
     })
   }, []);
 
-  const clientId = "798644551372-tnn43uc8f5g38ovkagspvr0ip4eah7vl.apps.googleusercontent.com"
+  const clientId = "google oauth client id"
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
