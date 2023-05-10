@@ -7,7 +7,7 @@ const encryptedPayload = localStorage.getItem('profile');
 let payloadObject = null;
 
 if (encryptedPayload) {
-  const bytes = CryptoJS.AES.decrypt(encryptedPayload, "my secret key with spaces and hashes#");
+  const bytes = CryptoJS.AES.decrypt(encryptedPayload, "secret");
   if (bytes.toString().length > 0) {
     const decryptedPayload = bytes.toString(CryptoJS.enc.Utf8);
     payloadObject = JSON.parse(decryptedPayload);
