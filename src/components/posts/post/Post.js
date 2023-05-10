@@ -18,8 +18,11 @@ const Post = ({ post, setCurrentId }) => {
   const encryptedPayload = localStorage.getItem('profile');
   let user = null;
 
+   // decrypt user profile from local storage
+   const userInfo = process.env.REACT_APP_ENCODE_DECODE_OAUTH
+
   if (encryptedPayload) {
-    const bytes = CryptoJS.AES.decrypt(encryptedPayload, "my secret key with spaces and hashes#");
+    const bytes = CryptoJS.AES.decrypt(encryptedPayload, userInfo);
     if (bytes.toString().length > 0) {
       const decryptedPayload = bytes.toString(CryptoJS.enc.Utf8);
       user = JSON.parse(decryptedPayload);

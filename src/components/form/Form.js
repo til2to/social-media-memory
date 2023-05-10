@@ -28,8 +28,11 @@ const Form = ({ currentId, setCurrentId }) => {
   const encryptedPayload = localStorage.getItem('profile');
   let user = null;
 
+  console.log(process.env)
+  // decode googleOauth from local storage
+  const decodeGoogleOuthFromLocalStorage = process.env.REACT_APP_ENCODE_DECODE_OAUTH
   if (encryptedPayload) {
-    const bytes = CryptoJS.AES.decrypt(encryptedPayload, "my secret key with spaces and hashes#");
+    const bytes = CryptoJS.AES.decrypt(encryptedPayload, decodeGoogleOuthFromLocalStorage);
     if (bytes.toString().length > 0) {
       const decryptedPayload = bytes.toString(CryptoJS.enc.Utf8);
       user = JSON.parse(decryptedPayload);

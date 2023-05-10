@@ -28,11 +28,11 @@ const Authen = () => {
   // to use the new google Oauth2
   useEffect(() => {
     gapi.load("client:auth2", ()=>{
-      gapi.auth2.init({clientId: clientId})
+      gapi.auth2.init({clientId: process.env.REACT_APP_GOOGLE_CLIENT_ID})
     })
   }, []);
 
-  const clientId = "798644551372-tnn43uc8f5g38ovkagspvr0ip4eah7vl.apps.googleusercontent.com"
+  const clientId = process.env.REACT_APP_GOOGLE_CLIENT_ID
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }

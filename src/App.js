@@ -12,8 +12,9 @@ const App = () => (
     <Container maxidth='lg'>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/auth" element={<Authen />} />
+        <Route exact path="/" element={<Home />} />
+        <Route exact path="/auth" element={<Authen />} />
+        <Route path='*' element={<div>Page Not Found!</div>} />
       </Routes>
     </Container>
   </BrowserRouter>

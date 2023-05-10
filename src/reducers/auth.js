@@ -5,8 +5,8 @@ const initialState = {
   isLoggedIn: false,
   username: ''
 }
-// Define a secret key for encryption
-const secretKey = "my secret key with spaces and hashes#";
+// encrypt the user profile from google oauth before sending to local storage
+const encodeGoogleOuthToLocalStorage = process.env.REACT_APP_ENCODE_DECODE_OAUTH
 
 const authReducer = (state = { authData: null }, action) => {
   switch(action.type){
@@ -14,7 +14,7 @@ const authReducer = (state = { authData: null }, action) => {
       // Convert the payload to a string
       const payloadString = JSON.stringify({ ...action?.payload });
       // Encrypt the payload using AES encryption with the secret key
-      const encryptedPayload = CryptoJS.AES.encrypt(payloadString, secretKey).toString();
+      const encryptedPayload = CryptoJS.AES.encrypt(payloadString, encodeGoogleOuthToLocalStorage).toString();
       // Save the encrypted payload to localStorage
       localStorage.setItem('profile', encryptedPayload);
       // Update the state with the original payload
