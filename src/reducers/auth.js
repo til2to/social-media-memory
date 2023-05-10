@@ -6,7 +6,7 @@ const initialState = {
   username: ''
 }
 // Define a secret key for encryption
-const secretKey = "my secret key with spaces and hashes#";
+const secretKey = "secret";
 
 const authReducer = (state = { authData: null }, action) => {
   switch(action.type){
