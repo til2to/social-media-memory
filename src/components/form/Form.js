@@ -29,7 +29,7 @@ const Form = ({ currentId, setCurrentId }) => {
   let user = null;
 
   if (encryptedPayload) {
-    const bytes = CryptoJS.AES.decrypt(encryptedPayload, "my secret key with spaces and hashes#");
+    const bytes = CryptoJS.AES.decrypt(encryptedPayload, "your secret key");
     if (bytes.toString().length > 0) {
       const decryptedPayload = bytes.toString(CryptoJS.enc.Utf8);
       user = JSON.parse(decryptedPayload);
