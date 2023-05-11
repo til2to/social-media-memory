@@ -19,7 +19,7 @@ const Form = ({ currentId, setCurrentId }) => {
   });
 
   const dispatch = useDispatch()
-  
+
   // find post from the state where post id equals current post id
   const post = useSelector((state) => currentId ? state.posts.find((p) => p._id === currentId) : null);
   // update the view when any property of post changes
@@ -30,7 +30,6 @@ const Form = ({ currentId, setCurrentId }) => {
   const encryptedPayload = localStorage.getItem('profile');
   let user = null;
 
-  console.log(process.env)
   // decode googleOauth from local storage
   const decodeGoogleOuthFromLocalStorage = process.env.REACT_APP_ENCODE_DECODE_OAUTH
   if (encryptedPayload) {

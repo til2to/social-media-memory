@@ -6,8 +6,11 @@ const API = axios.create({ baseURL: 'http://localhost:5000' })
 const encryptedPayload = localStorage.getItem('profile');
 let payloadObject = null;
 
+// Decrypt user info from local storage with key
+const userInfo = process.env.REACT_APP_ENCODE_DECODE_OAUTH;
+
 if (encryptedPayload) {
-  const bytes = CryptoJS.AES.decrypt(encryptedPayload, "my secret key with spaces and hashes#");
+  const bytes = CryptoJS.AES.decrypt(encryptedPayload, userInfo);
   if (bytes.toString().length > 0) {
     const decryptedPayload = bytes.toString(CryptoJS.enc.Utf8);
     payloadObject = JSON.parse(decryptedPayload);
