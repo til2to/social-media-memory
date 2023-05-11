@@ -6,7 +6,7 @@ const initialState = {
   username: ''
 }
 // encrypt the user profile from google oauth before sending to local storage
-const encodeGoogleOuthToLocalStorage = process.env.REACT_APP_ENCODE_DECODE_OAUTH
+const encodeGoogleOuthToLocalStorage = process.env.REACT_APP_ENCODE_DECODE_OAUTH;
 
 const authReducer = (state = { authData: null }, action) => {
   switch(action.type){
