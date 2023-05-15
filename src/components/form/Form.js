@@ -3,9 +3,10 @@ import { TextField, Button, Typography, Paper } from "@material-ui/core";
 import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
 import CryptoJS from 'crypto-js';
+import { useNavigate } from "react-router-dom";
 
 import useStyles from "./styles";
-import { createPost, updatePost} from "../../actions/posts";
+import { updatePost, createPost } from "../../actions/posts";
 
 const Form = ({ currentId, setCurrentId }) => {
   // use the hooks
@@ -18,10 +19,12 @@ const Form = ({ currentId, setCurrentId }) => {
     selectedFile: "",
   });
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // find post from the state where post id equals current post id
-  const post = useSelector((state) => currentId ? state.posts.find((p) => p._id === currentId) : null);
+  const post = useSelector((state) => currentId ? state.posts.posts.find((p) => p._id === currentId) : null);
+
   // update the view when any property of post changes
   useEffect(() => {
     if(post) setPostData(post)
@@ -44,7 +47,7 @@ const Form = ({ currentId, setCurrentId }) => {
   
   // clear all fields of the form
   const clear = () => {
-    setCurrentId(null)
+    setCurrentId(0)
     setPostData({
       title: "",
       message: "",
@@ -54,16 +57,15 @@ const Form = ({ currentId, setCurrentId }) => {
   }
 
    // if current id exist, submit new post else update the existing post
-   const handleSubmit = (e) => {
-    e.preventDefault()
-    if(currentId === 0) {
-      dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }))
-      clear();
-    }else{
-      dispatch(createPost({ ...postData, name: user?.result?.name }))
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (currentId === 0) {
+      dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
+    } else {
+      dispatch(updatePost(currentId, { ...postData, name: user?.result?.name }));
       clear();
     }
-  };
+  }
 
   if(!user?.result?.name){
     return (
@@ -75,7 +77,7 @@ const Form = ({ currentId, setCurrentId }) => {
     )
   }
   return (
-    <Paper className={classes.paper}>
+    <Paper className={classes.paper} elevation={6}>
       <form
         autoComplete="off"
         noValidate
@@ -125,6 +127,7 @@ const Form = ({ currentId, setCurrentId }) => {
           type="submit"
           size="large"
           fullWidth
+          style={{ backgroundColor: '#001F3F' }}
         >
           Submit 
         </Button>

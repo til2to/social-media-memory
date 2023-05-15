@@ -10,7 +10,7 @@ import useStyles from './styles'
 import CustomInput from './CustomizedInput';
 import Icon from './icon'
 import * as actions from '../../constants/actionTypes';
-import { signin, signup } from "../../actions/auth";
+import * as authens from "../../actions/auth";
 
 const initialState = {
   firstName: '', lastName: '', email: '', password: '', confirmPassword: ''
@@ -40,9 +40,9 @@ const Authen = () => {
   const handleSubmit = (e) => {
     e.preventDefault()
     if(!isSignin){
-      dispatch(signup(formData, navigate))
+      dispatch(authens.signup(formData, navigate))
     }else{
-      dispatch(signin(formData, navigate))
+      dispatch(authens.signin(formData, navigate))
     }
   }
 
